@@ -215,11 +215,15 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
         return results if call.return_response else None
 
     async def get_status(call: ServiceCall) -> ServiceResponse:
-        """Read-only: settings (access mode, schedule, max current) and recently seen vehicles."""
+        """Read-only: settings (access mode, schedule, max current), VIN allow list and recently seen vehicles."""
         results: dict[str, Any] = {}
         for target in _targets(hass, call):
             entry: dict[str, Any] = {"site_id": target[2], "transport": target[1]}
-            for message, key in (("get_config_request", "config"), ("get_recent_vehicles_request", "recent_vehicles")):
+            for message, key in (
+                ("get_config_request", "config"),
+                ("get_access_control_settings_request", "access_list"),
+                ("get_recent_vehicles_request", "recent_vehicles"),
+            ):
                 try:
                     response = await _post(target, build_command(target[3], message))
                 except HomeAssistantError as err:

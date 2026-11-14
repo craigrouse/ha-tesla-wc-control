@@ -94,8 +94,8 @@ get_status:
   name: Get Wall Connector status
   description: >-
     Read-only. Returns each Wall Connector's settings (vehicle access mode,
-    charge schedule, max current, country) and the vehicles it has seen
-    recently (VINs).
+    charge schedule, max current, country), its VIN allow list (used by
+    authorised_teslas) and the vehicles it has seen recently.
   fields:
     wall_connector:
       name: Wall Connector DIN

@@ -92,6 +92,13 @@ Reply `GetConfigResponse` includes `settings` (`max_output_current_amps`,
 `gmi_mode`, `country`, `third_party_vehicle_mode`), `wifi_config`, `wifi`
 (addresses, connectivity, RSSI), `charge_schedule` and `time_source`.
 
+### `get_access_control_settings_request`: works
+
+Reply `GetAccessControlSettingsResponse.entries: [{"vin": {"value": "<VIN>"}, "name": "<name>", "model": 4, "model_year": 2022}]`.
+This is the allow list used by mode 4 (`VIN_ALLOW_LIST`, "authorised Teslas").
+Changing it (`configure_access_control_settings_request`, operation
+ADD/REMOVE/CLEAR_ALL/RENAME) has not been tested.
+
 ### `get_recent_vehicles_request`: works
 
 Reply `GetRecentVehiclesResponse.recent_vehicles: [{"value": "<VIN>"}]`.

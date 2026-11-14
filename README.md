@@ -26,6 +26,7 @@ before the Wall Connector sees the message.
 | Start / stop charging | `push_charge_command_request` | **Works.** STOP ends the charge within seconds, START resumes it. START overrides the schedule for the current session |
 | Read settings | `get_config_request` | **Works.** Max current, country, ground monitoring mode, vehicle access mode, Wi-Fi, schedule |
 | Recently seen vehicles | `get_recent_vehicles_request` | **Works.** Returns VINs |
+| VIN allow list (for authorised Teslas) | `get_access_control_settings_request` | **Works.** Returns VIN, name, model, model year per entry. Changing the list (`configure_access_control_settings_request`) is untested |
 | Vehicle access (any EV / Tesla only / authorised Teslas / compatibility) | `configure_third_party_vehicle_mode_request` | **Works, at plug-in.** With Tesla only set, a re-plugged non-Tesla car was refused; with any vehicle set, it charged. Changing the mode does not affect a car that is already plugged in, either way |
 | Max output current | `configure_settings_request` | **Blocked** |
 | Temporary current limit / charging inhibit | `get/set_provisional_operational_params_request` | **Blocked** |
@@ -45,7 +46,7 @@ Teslemetry adds support, this integration already falls back to it. See
 | `tesla_wc_control.start_charging` | Start/resume charging the plugged-in vehicle |
 | `tesla_wc_control.stop_charging` | Stop charging the plugged-in vehicle |
 | `tesla_wc_control.set_vehicle_access` | `any_vehicle`, `tesla_only`, `authorised_teslas`, `compatibility` |
-| `tesla_wc_control.get_status` | Read-only: settings and recent vehicles |
+| `tesla_wc_control.get_status` | Read-only: settings, VIN allow list and recent vehicles |
 | `tesla_wc_control.send_raw` | Advanced: send any `WCMessages` request by name, for probing what Tesla relays |
 
 Every action takes an optional `wall_connector` (DIN). Without it, the action
@@ -56,6 +57,21 @@ charge again later.
 
 ```yaml
 action: tesla_wc_control.stop_charging
+```
+
+Example: lock the Wall Connector to your own Tesla while you're away
+(`authorised_teslas` only lets VINs on its allow list charge; add your car
+in the Tesla app first). Takes effect at the next plug-in.
+
+```yaml
+triggers:
+  - trigger: state
+    entity_id: input_boolean.holiday_mode
+    to: "on"
+actions:
+  - action: tesla_wc_control.set_vehicle_access
+    data:
+      mode: authorised_teslas
 ```
 
 ```yaml
