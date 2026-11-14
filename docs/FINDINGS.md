@@ -68,7 +68,7 @@ POST /api/1/energy_sites/{site_id}/command
 - START overrides the schedule for the current session: after START,
   re-enabling the schedule did not stop the charge, but STOP did.
 
-### `configure_third_party_vehicle_mode_request`: accepted, effect unclear
+### `configure_third_party_vehicle_mode_request`: works, checked at plug-in
 
 ```json
 {"third_party_vehicle_mode": 2}
@@ -78,8 +78,13 @@ POST /api/1/energy_sites/{site_id}/command
   3 `DISABLED_NO_ROADSTER`, 4 `VIN_ALLOW_LIST`, 5 `COMPATIBILITY`.
 - Reply `ConfigureThirdPartyVehicleModeResponse: {}`, and `get_config` then
   shows the new mode.
-- Switching to 2 while a non-Tesla car was already charging did not stop it.
-  Probably checked at plug-in; not yet tested with a re-plug.
+- The mode is checked when a car is plugged in. Tested with a non-Tesla car:
+  - Mode 2 set while it was charging: the charge carried on.
+  - Re-plugged with mode 2: refused. The connector stayed in `negotiating`
+    with the contactor open for over 6 minutes, including about 3 minutes
+    after switching back to mode 1 without re-plugging.
+  - Re-plugged with mode 1: charged.
+  So a change applies from the next plug-in, in both directions.
 
 ### `get_config_request`: works
 

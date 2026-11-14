@@ -26,7 +26,7 @@ before the Wall Connector sees the message.
 | Start / stop charging | `push_charge_command_request` | **Works.** STOP ends the charge within seconds, START resumes it. START overrides the schedule for the current session |
 | Read settings | `get_config_request` | **Works.** Max current, country, ground monitoring mode, vehicle access mode, Wi-Fi, schedule |
 | Recently seen vehicles | `get_recent_vehicles_request` | **Works.** Returns VINs |
-| Vehicle access (any EV / Tesla only / authorised Teslas / compatibility) | `configure_third_party_vehicle_mode_request` | **Accepted and stored**, but switching to Tesla only did not stop a non-Tesla car that was already charging. Probably applies from the next plug-in (not yet confirmed) |
+| Vehicle access (any EV / Tesla only / authorised Teslas / compatibility) | `configure_third_party_vehicle_mode_request` | **Works, at plug-in.** With Tesla only set, a re-plugged non-Tesla car was refused; with any vehicle set, it charged. Changing the mode does not affect a car that is already plugged in, either way |
 | Max output current | `configure_settings_request` | **Blocked** |
 | Temporary current limit / charging inhibit | `get/set_provisional_operational_params_request` | **Blocked** |
 | Smart charging target power / current with TTL | `push_smart_charging_command_request` | **Blocked** |

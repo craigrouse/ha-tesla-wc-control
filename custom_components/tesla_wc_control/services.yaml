@@ -71,8 +71,8 @@ set_vehicle_access:
   name: Set vehicle access
   description: >-
     The Tesla app's access control setting. tesla_only blocks non-Tesla
-    vehicles while Teslas can still charge. Seems to apply from the next
-    plug-in, not to a session already in progress.
+    vehicles while Teslas can still charge. Applies from the next
+    plug-in: a car already plugged in is not affected.
   fields:
     mode:
       name: Mode
