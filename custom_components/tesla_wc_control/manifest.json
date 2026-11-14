@@ -1,0 +1,15 @@
+{
+  "domain": "tesla_wc_control",
+  "name": "Tesla Wall Connector Control",
+  "after_dependencies": ["teslemetry", "tesla_fleet"],
+  "codeowners": [],
+  "config_flow": true,
+  "dependencies": ["http"],
+  "documentation": "https://github.com/craigrouse/ha-tesla-wc-control",
+  "integration_type": "service",
+  "iot_class": "cloud_push",
+  "issue_tracker": "https://github.com/craigrouse/ha-tesla-wc-control/issues",
+  "requirements": [],
+  "single_config_entry": true,
+  "version": "0.3.0"
+}

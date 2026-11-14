@@ -1,0 +1,128 @@
+set_schedule:
+  name: Set charge schedule
+  description: >-
+    Set the Wall Connector's own charge schedule (the one in the Tesla app's
+    Wall Connector settings). With the schedule enabled the connector only
+    lets cars charge inside the window; disabled, it charges any time. Times
+    are local. Applies to every vehicle, Teslas included.
+  fields:
+    enabled:
+      name: Schedule enabled
+      required: true
+      selector:
+        boolean:
+    start:
+      name: Window start
+      default: "23:30:00"
+      selector:
+        time:
+    end:
+      name: Window end
+      description: May be earlier than the start for an overnight window.
+      default: "05:30:00"
+      selector:
+        time:
+    day_bitmask:
+      name: Days bitmask
+      description: "127 = every day. Bits are Sunday 1, Monday 2, Tuesday 4, Wednesday 8, Thursday 16, Friday 32, Saturday 64."
+      default: 127
+      selector:
+        number:
+          min: 1
+          max: 127
+          mode: box
+    dry_run:
+      name: Dry run
+      description: Return the request that would be sent, without sending it.
+      default: false
+      selector:
+        boolean:
+    wall_connector:
+      name: Wall Connector DIN
+      description: Leave empty for every Wall Connector.
+      selector:
+        text:
+
+start_charging:
+  name: Start charging
+  description: >-
+    Start (or resume) charging the vehicle that is plugged in. Overrides the
+    Wall Connector's schedule for the current session.
+  fields:
+    wall_connector:
+      name: Wall Connector DIN
+      description: Leave empty for every Wall Connector.
+      selector:
+        text:
+
+stop_charging:
+  name: Stop charging
+  description: >-
+    Stop charging the vehicle that is plugged in. Works on any vehicle,
+    including ones that ignore remote stop commands of their own.
+  fields:
+    wall_connector:
+      name: Wall Connector DIN
+      description: Leave empty for every Wall Connector.
+      selector:
+        text:
+
+set_vehicle_access:
+  name: Set vehicle access
+  description: >-
+    The Tesla app's access control setting. tesla_only blocks non-Tesla
+    vehicles while Teslas can still charge. Seems to apply from the next
+    plug-in, not to a session already in progress.
+  fields:
+    mode:
+      name: Mode
+      required: true
+      selector:
+        select:
+          options:
+            - any_vehicle
+            - tesla_only
+            - authorised_teslas
+            - compatibility
+    wall_connector:
+      name: Wall Connector DIN
+      description: Leave empty for every Wall Connector.
+      selector:
+        text:
+
+get_status:
+  name: Get Wall Connector status
+  description: >-
+    Read-only. Returns each Wall Connector's settings (vehicle access mode,
+    charge schedule, max current, country) and the vehicles it has seen
+    recently (VINs).
+  fields:
+    wall_connector:
+      name: Wall Connector DIN
+      description: Leave empty for every Wall Connector.
+      selector:
+        text:
+
+send_raw:
+  name: Send raw Wall Connector message
+  description: >-
+    Advanced. Send any WCMessages request by its snake_case name (see
+    Teslemetry/tesla-protocol wall_connector.proto) and return the reply.
+    For finding out which messages Tesla's gateway relays. Can change
+    settings; use with care.
+  fields:
+    message:
+      name: Message
+      required: true
+      example: get_config_request
+      selector:
+        text:
+    params:
+      name: Parameters
+      selector:
+        object:
+    wall_connector:
+      name: Wall Connector DIN
+      description: Leave empty for every Wall Connector.
+      selector:
+        text:
